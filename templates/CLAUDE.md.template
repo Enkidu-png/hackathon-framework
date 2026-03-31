@@ -1,0 +1,51 @@
+# {{HACKATHON_NAME}}
+
+## Team
+- **Leader:** {{LEADER_NAME}}
+- **Vibe coders:** {{VIBE_CODER_COUNT}}
+- **Repo:** {{REPO_URL}}
+
+## Rules
+
+### Web Research
+**Always use Vercel agent-browser for web research.** Never use WebSearch or WebFetch directly. Route all browsing through agent-browser.
+
+### Coordination
+- Before starting work: call `get_progress` and `get_module_context` from the hackathon-brain MCP
+- After starting/finishing work: call `update_progress`
+- Respect module interfaces defined in `.hackathon/architecture.json`
+- Do NOT modify shared types without team agreement
+
+### Approval-Commit Rule
+**When a user says "commit it" or "commit" — immediately launch the `gh-action` agent to commit and push.** Only these phrases trigger the commit. Other approvals like "looks good" or "yes" do NOT trigger a commit.
+
+Flow:
+1. User says "commit it" or "commit"
+2. You IMMEDIATELY spawn the `gh-action` agent with the relevant files
+3. Agent stages only the relevant files, creates a structured commit, and pushes
+
+This keeps the repo always up-to-date with approved work and prevents losing progress.
+
+### Visual / UI Verification
+**When working on anything visual — UI components, pages, layouts, styling, or frontend features — you MUST verify it works using Playwright before considering it done.**
+
+1. After implementing a visual change, launch a Playwright browser to load the page
+2. Take a screenshot and verify the result matches intent
+3. If it doesn't look right or throws errors, fix it and re-test
+4. Only present the work to the user after Playwright confirms it renders correctly
+
+Do NOT rely on "it should work" — visuals must be seen to be verified.
+
+### Git
+- Auto-savepoints are active (every file change creates a savepoint commit)
+- Approved work is committed via `gh-action` agent (structured commits with scope)
+- Never force push
+- Never `git add -A` for real commits — only stage specific approved files
+
+## Workflow Commands
+1. `/hackathon:step1` — Paste transcript/notes -> structured app spec
+2. `/hackathon:step2` — Architecture decomposition + parallel module research
+3. `/hackathon:overnight` — Overnight autoresearch loop
+
+## Current Phase
+_Run /hackathon:step1 to begin._

@@ -1,0 +1,6 @@
+# Hackathon shared credentials — committed to private repo
+# Rotate all keys after hackathon ends
+
+SUPABASE_ACCESS_TOKEN={{SUPABASE_TOKEN}}
+SUPABASE_PROJECT_REF={{SUPABASE_REF}}
+VERCEL_TOKEN={{VERCEL_TOKEN}}

@@ -1,0 +1,26 @@
+{
+  "name": "hackathon-framework",
+  "version": "1.0.0",
+  "description": "AI-native hackathon framework — shared MCP brain, parallel module research, overnight autoresearch, and team coordination for Claude Code vibe coding teams",
+  "author": {
+    "name": "Jan Sachse"
+  },
+  "repository": "https://github.com/hackathon-framework/hackathon-framework",
+  "license": "MIT",
+  "keywords": [
+    "hackathon",
+    "team",
+    "mcp",
+    "coordination",
+    "autoresearch",
+    "vibe-coding"
+  ],
+  "agents": [
+    "./agents/app-architect.md",
+    "./agents/module-researcher.md",
+    "./agents/overnight-merger.md",
+    "./agents/gh-action.md"
+  ],
+  "skills": ["./skills/"],
+  "commands": []
+}

@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Write(*)",
+      "Edit(*)",
+      "MultiEdit(*)",
+      "Read(*)",
+      "Grep(*)",
+      "Glob(*)",
+      "Agent(*)",
+      "Task(*)",
+      "mcp__hackathon-brain__*",
+      "mcp__*"
+    ],
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git reset --hard*)",
+      "Bash(rm -rf /*)"
+    ],
+    "defaultMode": "bypassPermissions"
+  }
+}
