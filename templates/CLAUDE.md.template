@@ -43,9 +43,9 @@ Do NOT rely on "it should work" — visuals must be seen to be verified.
 - Never `git add -A` for real commits — only stage specific approved files
 
 ## Workflow Commands
-1. `/hackathon:step1` — Paste transcript/notes -> structured app spec
+1. `/hackathon:step1` — When the team has a plan: paste transcript/notes -> structured app spec
 2. `/hackathon:step2` — Architecture decomposition + parallel module research
 3. `/hackathon:overnight` — Overnight autoresearch loop
 
 ## Current Phase
-_Run /hackathon:step1 to begin._
+_Brainstorm with your team first. When you have a plan, run /hackathon:step1._

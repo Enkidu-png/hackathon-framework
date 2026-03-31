@@ -157,7 +157,8 @@ Share this with your team:
 
 ⚠ RESTART REQUIRED: Claude Code must restart for the Codex plugin to activate.
 After restart, run:  /codex:setup
-Then run:            /hackathon:step1
+
+Brainstorm with your team first. When you have a plan, run /hackathon:step1
 ```
 
 Open in VSCode:
@@ -248,7 +249,8 @@ Current phase: <current_phase from state.json>
 
 ⚠ RESTART REQUIRED: Claude Code must restart for Codex + MCP brain to activate.
 After restart, run:  /codex:setup
-Then follow team lead's instructions or run the current phase skill.
+
+Then brainstorm with your team. When the team has a plan, the leader will run /hackathon:step1
 ```
 
 Open in VSCode:
