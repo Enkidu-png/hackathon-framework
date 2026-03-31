@@ -7,6 +7,17 @@
 
 ## Rules
 
+### Hackathon Brain — MANDATORY
+**For ANY question about the project — vision, architecture, tech stack, what others are working on, module details, progress — you MUST call the hackathon-brain MCP tools FIRST.** Do NOT answer from memory, local files, or guesswork.
+
+- "What did we decide?" → call `get_vision`, `get_techstack`, `get_architecture`
+- "What is X working on?" → call `get_progress`
+- "What does the auth module do?" → call `get_module_context`
+- "What's our tech stack?" → call `get_techstack`
+- "Where are we at?" → call `get_progress` (all members)
+
+The MCP brain auto-pulls from git before every read, so it always has the latest team state. NEVER skip this — your local knowledge may be outdated.
+
 ### Web Research
 **Always use Vercel agent-browser for web research.** Never use WebSearch or WebFetch directly. Route all browsing through agent-browser.
 

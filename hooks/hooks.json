@@ -1,5 +1,31 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const cp=require('child_process');try{cp.execSync('git pull --rebase --quiet',{stdio:'ignore',timeout:15000})}catch(e){}\"",
+            "timeout": 20
+          }
+        ],
+        "description": "Auto git pull when Claude Code starts — get latest team changes"
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const cp=require('child_process');try{cp.execSync('git pull --rebase --quiet',{stdio:'ignore',timeout:10000})}catch(e){}\"",
+            "timeout": 15
+          }
+        ],
+        "description": "Auto git pull before every prompt — always work with latest state"
+      }
+    ],
     "Stop": [
       {
         "matcher": "*",
@@ -10,7 +36,7 @@
             "timeout": 15
           }
         ],
-        "description": "Auto git savepoint when Claude finishes a turn — one savepoint per prompt, not per file"
+        "description": "Auto git savepoint when Claude finishes a turn"
       }
     ]
   }
