@@ -218,5 +218,52 @@ server.tool(
   }
 );
 
+// Tool: get_all — single call for full context (saves tokens vs calling 5 tools)
+server.tool(
+  "get_all",
+  "Get a compact summary of the entire hackathon state in one call — vision, techstack, architecture, assignments, and team progress. Use this instead of calling multiple get_* tools.",
+  {},
+  async () => {
+    gitPull();
+    const state = readJson(path.join(HACKATHON_DIR, "state.json"));
+    const spec = readJson(path.join(HACKATHON_DIR, "app-spec.json"));
+    const techstack = readJson(path.join(HACKATHON_DIR, "techstack.json"));
+    const arch = readJson(path.join(HACKATHON_DIR, "architecture.json"));
+    const progress = readAllInDir(path.join(HACKATHON_DIR, "progress"));
+
+    // Build compact summary
+    const summary = {
+      hackathon: state.hackathon_name,
+      phase: state.current_phase,
+      team: state.team,
+      assignments: state.assignments || {},
+      vision: spec.error
+        ? "Not defined yet"
+        : { pitch: spec.value_proposition, problem: spec.problem, mvp_features: (spec.features?.mvp || []).map((f) => f.name) },
+      techstack: techstack.error
+        ? "Not decided yet"
+        : { frontend: techstack.frontend?.framework, backend: techstack.backend?.platform, database: techstack.database?.provider, auth: techstack.auth?.provider },
+      modules: arch.error
+        ? []
+        : (arch.modules || []).map((m) => ({
+            name: m.name,
+            owner: m.owner || "unassigned",
+            complexity: m.complexity,
+            status: m.status || "not_started",
+          })),
+      progress: Object.fromEntries(
+        Object.entries(progress).map(([name, p]) => [
+          name,
+          { status: p.status, working_on: p.working_on, blockers: p.blockers },
+        ])
+      ),
+    };
+
+    return {
+      content: [{ type: "text", text: JSON.stringify(summary, null, 2) }],
+    };
+  }
+);
+
 const transport = new StdioServerTransport();
 await server.connect(transport);
