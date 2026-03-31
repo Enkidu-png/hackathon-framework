@@ -57,8 +57,9 @@ Do NOT rely on "it should work" — visuals must be seen to be verified.
 1. `/hackathon:step1` — When the team has a plan: paste transcript/notes -> structured app spec
 2. `/hackathon:step2` — Architecture decomposition + parallel module research
 3. `/hackathon:step3` — Distribute modules among coders + create build briefs
-4. `/hackathon:overnight` — Overnight autoresearch loop
-5. `/hackathon:update` — Update plugin to latest version
+4. `/update-hackathon` — Change anything (assignments, tech stack, modules, rules)
+5. `/hackathon:overnight` — Overnight autoresearch loop
+6. `/hackathon:update` — Update plugin to latest version
 
 ## Current Phase
 _Brainstorm with your team first. When you have a plan, run /hackathon:step1._
