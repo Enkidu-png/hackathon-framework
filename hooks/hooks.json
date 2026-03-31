@@ -6,24 +6,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node -e \"const cp=require('child_process');try{cp.execSync('git pull --rebase --quiet',{stdio:'ignore',timeout:15000})}catch(e){}\"",
-            "timeout": 20
+            "command": "node -e \"try{require('child_process').execSync('git pull --rebase --quiet',{stdio:'ignore',timeout:10000})}catch(e){}\"",
+            "timeout": 12
           }
         ],
-        "description": "Auto git pull when Claude Code starts — get latest team changes"
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node -e \"const cp=require('child_process');try{cp.execSync('git pull --rebase --quiet',{stdio:'ignore',timeout:10000})}catch(e){}\"",
-            "timeout": 15
-          }
-        ],
-        "description": "Auto git pull before every prompt — always work with latest state"
+        "description": "Git pull on session start"
       }
     ],
     "Stop": [
@@ -32,11 +19,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node -e \"const cp=require('child_process');try{const r=cp.execSync('git status --porcelain',{encoding:'utf8',timeout:5000});if(r.trim()){cp.execSync('git add -A && git commit -m \\\"savepoint: auto-save\\\" --no-verify',{stdio:'ignore',timeout:10000})}}catch(e){}\"",
-            "timeout": 15
+            "command": "node -e \"try{const r=require('child_process').execSync('git status --porcelain',{encoding:'utf8',timeout:3000});if(r.trim())require('child_process').execSync('git add -A && git commit -m \\\"savepoint: auto-save\\\" --no-verify',{stdio:'ignore',timeout:5000})}catch(e){}\"",
+            "timeout": 8
           }
         ],
-        "description": "Auto git savepoint when Claude finishes a turn"
+        "description": "Savepoint on turn end"
       }
     ]
   }
