@@ -17,19 +17,23 @@ Parse the user's input:
 
 ## Create Flow (Leader)
 
-### Step 1: Gather Info
+### Step 1: Gather Info — USE AskUserQuestion TOOL
 
-Ask the user these questions (use AskUserQuestion or direct conversation):
+**You MUST use the AskUserQuestion tool for gathering info. Do NOT ask questions as plain text chat.**
 
-1. **Hackathon name** — short, no spaces, used as repo name (e.g., `smart-receipts`)
-2. **Your name** — the leader's name for progress tracking
-3. **Target directory** — where to create the project (default: current directory)
-4. **GitHub org or username** — where to create the private repo
-5. **Team members' GitHub usernames** — comma-separated list of all teammates
-6. **Number of vibe coders** — how many people will be coding (may differ from team size)
-7. **Supabase Access Token** — shared token for the team (or skip if not using Supabase)
-8. **Supabase Project Ref** — the project reference ID (or skip)
-9. **Vercel Token** — shared Vercel token (or skip if not using Vercel)
+Use AskUserQuestion with up to 4 questions per call. Split into 2 rounds:
+
+**Round 1** — AskUserQuestion with these 4 questions:
+1. "What is the hackathon name?" (header: "Name", options: let user type via Other — no preset options needed, use 2 example options like "smart-receipts", "hack-2026")
+2. "What is your name (for progress tracking)?" (header: "Leader", options: 2 example options, user picks or types)
+3. "GitHub org or personal account for the repo?" (header: "GitHub", options: user's GitHub username as option 1, "Other org" as option 2)
+4. "How many vibe coders (including you)?" (header: "Coders", options: "2", "3", "4", "5+")
+
+**Round 2** — AskUserQuestion:
+1. "GitHub usernames of your teammates (comma-separated)?" (header: "Team", options: 2 placeholder options, user types)
+2. "Target directory for the project?" (header: "Directory", options: "Current directory (Recommended)", "Desktop", user can type custom)
+
+**Do NOT ask for .env secrets.** The .env file will be created as a template for the user to fill manually.
 
 ### Step 2: Create Project Directory
 
@@ -41,7 +45,7 @@ git init
 
 ### Step 3: Scaffold Repo Structure
 
-Copy templates from `${CLAUDE_PLUGIN_ROOT}/templates/` into the new repo. For each template file, replace placeholders with actual values:
+Copy templates from `${CLAUDE_PLUGIN_ROOT}/templates/` into the new repo. Replace placeholders with actual values:
 
 1. **`.hackathon/brain/`** — Copy `hackathon-brain/server.js` and `hackathon-brain/package.json`
 2. **`.hackathon/progress/`** — Create empty directory
@@ -50,15 +54,14 @@ Copy templates from `${CLAUDE_PLUGIN_ROOT}/templates/` into the new repo. For ea
 5. **`.hackathon/overnight/`** — Create empty directory
 6. **`.mcp.json`** — Copy from `mcp.json.template`
 7. **`.claude/settings.json`** — Copy from `settings.json.template`
-8. **`CLAUDE.md`** — Copy from `CLAUDE.md.template`, replace:
-   - `{{HACKATHON_NAME}}` with hackathon name
-   - `{{LEADER_NAME}}` with leader name
-   - `{{VIBE_CODER_COUNT}}` with number
-   - `{{REPO_URL}}` with the GitHub URL (fill after repo creation)
-9. **`.env`** — Copy from `dotenv.template`, replace:
-   - `{{SUPABASE_TOKEN}}` with provided token (or leave empty)
-   - `{{SUPABASE_REF}}` with provided ref (or leave empty)
-   - `{{VERCEL_TOKEN}}` with provided token (or leave empty)
+8. **`CLAUDE.md`** — Copy from `CLAUDE.md.template`, replace placeholders
+9. **`.env`** — Create from `dotenv.template` but leave values EMPTY as placeholders:
+   ```
+   # Fill in your credentials — DO NOT share in chat
+   SUPABASE_ACCESS_TOKEN=
+   SUPABASE_PROJECT_REF=
+   VERCEL_TOKEN=
+   ```
 10. **`.gitignore`** — Copy from `gitignore.template`
 
 Create initial state file `.hackathon/state.json`:
@@ -145,8 +148,6 @@ npx playwright install chromium
 
 ### Step 9: Output (Pre-Restart)
 
-**IMPORTANT:** After installing the codex plugin, Claude Code must restart for `/codex` commands to appear. Tell the user:
-
 ```
 === Hackathon Created! ===
 
@@ -155,7 +156,10 @@ Repo: https://github.com/<org>/<hackathon-name>
 Share this with your team:
   /init_hackathon join https://github.com/<org>/<hackathon-name>
 
-⚠ RESTART REQUIRED: Claude Code must restart for the Codex plugin to activate.
+IMPORTANT: Fill in your .env file with your credentials before starting.
+Open .env and add your Supabase and Vercel tokens.
+
+RESTART REQUIRED: Claude Code must restart for Codex + MCP brain.
 After restart, run:  /codex:setup
 
 Brainstorm with your team first. When you have a plan, run /hackathon:step1
@@ -166,19 +170,17 @@ Open in VSCode:
 code <target-dir>/<hackathon-name>
 ```
 
-**Note for all skills:** If `/codex:setup` has not been run yet (check by trying a codex command), remind the user to run it first.
-
 ---
 
 ## Join Flow (Team Member)
 
-Input: `/init_hackathon join <repo-url>`
+### Step 1: Gather Info — USE AskUserQuestion TOOL
 
-### Step 1: Gather Info
+**You MUST use the AskUserQuestion tool. Do NOT ask as plain text.**
 
-Ask the user:
-1. **Your name** — for progress tracking
-2. **Target directory** — where to clone (default: current directory)
+AskUserQuestion with 2 questions:
+1. "What is your name (for progress tracking)?" (header: "Name", options: 2 examples, user types)
+2. "Target directory for cloning?" (header: "Directory", options: "Current directory (Recommended)", "Desktop")
 
 ### Step 2: Clone
 
@@ -218,23 +220,14 @@ git push
 
 ### Step 5: Install Mandatory Plugins
 
-Check and install:
 ```bash
 claude plugin install claude-mem@thedotmack
 claude plugin install context7@claude-plugins-official
 claude plugin install supabase@claude-plugins-official
 claude plugin install vercel@claude-plugins-official
 claude plugin install github@claude-plugins-official
-```
-
-Install Codex (requires restart before setup):
-```bash
 claude /plugin marketplace add openai/codex-plugin-cc
 claude /plugin install codex@openai-codex
-```
-
-Playwright:
-```bash
 npx playwright install chromium
 ```
 
@@ -244,13 +237,15 @@ npx playwright install chromium
 === Welcome to <hackathon-name>! ===
 
 You're registered as: <name>
-Team: <list of members from state.json>
-Current phase: <current_phase from state.json>
+Team: <list of members>
 
-⚠ RESTART REQUIRED: Claude Code must restart for Codex + MCP brain to activate.
+IMPORTANT: Fill in your .env file with your credentials.
+Open .env and add your Supabase and Vercel tokens.
+
+RESTART REQUIRED: Claude Code must restart for Codex + MCP brain.
 After restart, run:  /codex:setup
 
-Then brainstorm with your team. When the team has a plan, the leader will run /hackathon:step1
+Then brainstorm with your team. When ready, the leader runs /hackathon:step1
 ```
 
 Open in VSCode:

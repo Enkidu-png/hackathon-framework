@@ -10,7 +10,7 @@
       "name": "hackathon-framework",
       "source": "./",
       "description": "Shared MCP brain, parallel module research, overnight autoresearch, and team coordination",
-      "version": "1.0.5",
+      "version": "1.0.6",
       "category": "workflow",
       "strict": false
     }
